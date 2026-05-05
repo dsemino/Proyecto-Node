@@ -7,11 +7,8 @@ const __dirname = path.dirname(__filename);
 
 import  {argv } from 'process';
 
-const comando = argv[2];
-const parametro1 = argv[3];
-const parametro2 = argv[4];
-const parametro3 = argv[5];
-const parametro4 = argv[6];
+const [, , comando, parametro1, parametro2, parametro3, parametro4] = process.argv;
+
 let product;
 let partes;
 let id;
@@ -20,6 +17,7 @@ let url;
 switch(comando) {
     case 'GET':
         //console.log(`Toma un dato`);
+		// En esta caso si solo ingresan en comando GET sin argumento devuelve todos los productos
         if (!parametro1){
             fetch('https://fakestoreapi.com/products')
             
@@ -27,9 +25,10 @@ switch(comando) {
             .then(data => console.log(data));
         }
         else{
+			//En esta caso devuelve el producto seleccionado si se ingreso o 
+            // todos en caso que no se indique id de producto
             partes = parametro1.split("products");
-            // partes[0] sería lo que está antes ("")
-            // partes[1] es lo que está después ("123")
+			// partes[1] toma la parte que sigue a products = "/id"
             id = partes[1]; 
             url = "https://fakestoreapi.com/products" + id;
             fetch(url)
@@ -49,22 +48,10 @@ switch(comando) {
         .then(response => response.json())
         .then(data => console.log(data));
         break;
-    case 'PUT':
-        //console.log(`Modificamos el item con id : ${parametro} satisfactoriamente`);
-        // product = { title: parametro2, price: parametro3, category: parametro4 };
-        // fetch('https://fakestoreapi.com/products/1', {
-        // method: 'PUT',
-        // headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify(product)
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log(data)); 
-        break;
     case 'DELETE':
         //console.log(`El item con id : ${parametro} se eliminó con exito`);
         partes = parametro1.split("products");
-        // partes[0] sería lo que está antes ("")
-        // partes[1] es lo que está después ("123")
+		// partes[1] toma la parte que sigue a products = "/id"
         id = partes[1]; 
         url = "https://fakestoreapi.com/products" + id;
         console.log(url);
